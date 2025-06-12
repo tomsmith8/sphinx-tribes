@@ -61,7 +61,7 @@ type TicketPlanDetails struct {
 
 func (c *Client) Read() {
 	defer func() {
-		// ceck to acoid nil pointer
+		// check to avoid nil pointer
 		if c.Pool != nil {
 			c.Pool.Unregister <- c
 			c.Conn.Close()
