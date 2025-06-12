@@ -4,7 +4,7 @@
 
 ### File naming convention
 
-- Golang files shold be named in snake case i.e (go_route.go)
+- Golang files should be named in snake case i.e (go_route.go)
 
 ## Frontend
 
