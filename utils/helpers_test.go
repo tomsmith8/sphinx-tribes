@@ -83,11 +83,15 @@ func TestConvertTimeToTimestamp(t *testing.T) {
 	dateWithPlus := "2024-10-16 09:21:21.743327+00"
 	dateWithoutPlus := "2024-10-16 09:21:21.743327"
 
+	expected, err := time.Parse("2006-01-02 15:04:05.999999", "2024-10-16 09:21:21.743327")
+	assert.NoError(t, err)
+	expectedTs := int(expected.Unix())
+
 	dateTimestamp1 := ConvertTimeToTimestamp(dateWithPlus)
 	dateTimestamp2 := ConvertTimeToTimestamp(dateWithoutPlus)
 
-	assert.Greater(t, dateTimestamp1, 7000000)
-	assert.Greater(t, dateTimestamp2, 7000000)
+	assert.Equal(t, expectedTs, dateTimestamp1)
+	assert.Equal(t, expectedTs, dateTimestamp2)
 }
 
 func TestGetHoursDifference(t *testing.T) {

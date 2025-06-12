@@ -75,20 +75,28 @@ func GetInvoiceExpired(paymentRequest string) bool {
 }
 
 func ConvertTimeToTimestamp(date string) int {
-	format := "2006-01-02 15:04:05"
-	dateTouse := date
+	dateToUse := date
 
 	if strings.Contains(date, "+") {
 		dateSplit := strings.Split(date, "+")
-		dateTouse = strings.Trim(dateSplit[0], " ")
+		dateToUse = strings.Trim(dateSplit[0], " ")
 	}
 
-	t, err := time.Parse(format, dateTouse)
-	if err != nil {
-		logger.Log.Error("Parse string to timestamp: %v", err)
-	} else {
-		return int(t.Unix())
+	layouts := []string{
+		"2006-01-02 15:04:05.999999",
+		"2006-01-02 15:04:05",
 	}
+
+	var parseErr error
+	for _, layout := range layouts {
+		t, err := time.Parse(layout, dateToUse)
+		if err == nil {
+			return int(t.Unix())
+		}
+		parseErr = err
+	}
+
+	logger.Log.Error("Parse string to timestamp: %v", parseErr)
 	return 0
 }
 
