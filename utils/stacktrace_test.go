@@ -297,13 +297,14 @@ func BenchmarkStacktrace(b *testing.B) {
       name:               "Exactly Two Matching Frames",
       stackTrace:         "file1.go:100\nfile2.go:200",
       err:                fmt.Errorf("two frames only"),
-      // Two matching frames are discarded (frames[2:]) so effective frames = 0.
-      // Total edges = 4.
-      expectedEdgesCount:      4,
-      expectedEffectiveFrames: 0,
+      // Both frames should be included. Total edges = 4 base + 2 CONTAINS + 1 NEXT = 7.
+      expectedEdgesCount:      7,
+      expectedEffectiveFrames: 2,
       expectedReportError:     "two frames only",
       containsEdgeCheck: containsCheck{
-        shouldCheck: false,
+        shouldCheck:  true,
+        expectedFile: "file1.go",
+        expectedLine: 100,
       },
     },
     {
