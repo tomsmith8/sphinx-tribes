@@ -26,7 +26,7 @@ func (pool *Pool) Start() {
 	for {
 		select {
 		case client := <-pool.Register:
-			// ceck to acoid nil pointer
+			// check to avoid nil pointer
 			if pool.Clients == nil {
 				pool.Clients = make(map[string]*ClientData)
 			}
@@ -49,7 +49,7 @@ func (pool *Pool) Start() {
 				fmt.Println("Websocket pool client save error")
 			}
 		case client := <-pool.Unregister:
-			// ceck to acoid nil pointer
+			// check to avoid nil pointer
 			if pool.Clients[client.Host] != nil {
 				pool.Clients[client.Host].Client.Conn.WriteJSON(Message{Type: 1, Body: "User Disconnected..."})
 				delete(pool.Clients, client.Host)
@@ -58,7 +58,7 @@ func (pool *Pool) Start() {
 
 		case message := <-pool.Broadcast:
 			fmt.Println("Sending message to all clients in Pool")
-			// ceck to acoid nil pointer
+			// check to avoid nil pointer
 			if pool.Clients != nil {
 				for client, _ := range pool.Clients {
 					if err := pool.Clients[client].Client.Conn.WriteJSON(message); err != nil {
